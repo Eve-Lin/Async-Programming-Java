@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ThreadExercise {
 
     static List<Integer> numbers;
+   static Lock lock = new ReentrantLock();
 
     public static void main(String[] args) {
 
@@ -37,14 +40,15 @@ public class ThreadExercise {
 
     public static void removeAllElements() {
 
-        while (true) {
-            synchronized (numbers) {
-                if (numbers.size() <= 0) {
-                    break;
+        while (numbers.size() > 0) {
+//            synchronized (numbers) {
+            lock.lock();
+                if (numbers.size() > 0) {
+                    numbers.remove(numbers.size() - 1);
                 }
-                numbers.remove(numbers.size() - 1);
 
-            }
+//            }
+            lock.unlock();
         }
     }
 }
